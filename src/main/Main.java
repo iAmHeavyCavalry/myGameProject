@@ -4,7 +4,7 @@ package main;
 public class Main {
 
     //this will be the shortest file were we convoke
-    //different classes.
+    //different classes or in this case, just Game.
 
     public static void main(String[] args){
 

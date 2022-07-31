@@ -1,11 +1,13 @@
 package main;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Random;
+
+import javax.swing.JPanel;
+
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
-
-import java.awt.*;
-import java.util.Random;
-import javax.swing.*;
 
 //extends is like adding JPanel inputs to GamePanel
 
@@ -16,10 +18,10 @@ public class GamePanel extends JPanel {
 
     private MouseInputs mouseInputs;
     private float xDelta = 100, yDelta = 100;
-    private float xDir = 0.003F, yDir = 0.003F;
+    private float xDir = 1F, yDir = 1F;
     private int frames = 0;
     private long lastCheck = 0;
-    private Color color = new Color(150, 20, 100);
+    private Color color = new Color(150, 20, 90);
     private Random random;
 
     //Constructor
@@ -75,14 +77,6 @@ public class GamePanel extends JPanel {
         g.setColor(color);
         g.fillRect((int) xDelta, (int) yDelta, 200, 50);
 
-        frames++;
-
-        if (System.currentTimeMillis() - lastCheck >= 1_000) {
-            lastCheck = System.currentTimeMillis();
-            System.out.println("FPS: " + frames);
-            frames = 0;
-        }
-
     }
 
     private void updateRectangle() {
@@ -93,9 +87,10 @@ public class GamePanel extends JPanel {
             color = getRndColor();
         }
         yDelta += yDir;
-        if (yDelta > 400 || yDelta < 0)
+        if (yDelta > 400 || yDelta < 0) {
             yDir *= -1;
             color = getRndColor();
+        }
     }
 
     private Color getRndColor() {

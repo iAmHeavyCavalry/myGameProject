@@ -33,6 +33,7 @@ public class Game implements Runnable {
     private void startGameLoop(){
 
         gameThread = new Thread(this);
+        gameThread.start();
     }
 
     //here I want to make the game loop run on
@@ -41,18 +42,31 @@ public class Game implements Runnable {
     @Override
     public void run() {
 
-        double timePerFrame = 1_000_000_000 / FPS_SET;
+        double timePerFrame = 1_000_000_000.0 / FPS_SET;
         long lastFrame = System.nanoTime();
         long now = System.nanoTime();
 
+        int frames = 0;
+        long lastCheck = System.currentTimeMillis();
+
         while(true){
 
-            now = System.nanoTime();
-            if (now - lastFrame >= timePerFrame){
+        now = System.nanoTime();
+        if (now - lastFrame >= timePerFrame){
 
-                gamePanel.repaint();
-                lastFrame = now;
-            }
+            gamePanel.repaint();
+            lastFrame = now;
+            frames++;
+
+        }
+
+        if (System.currentTimeMillis() - lastCheck >= 1000) {
+            lastCheck = System.currentTimeMillis();
+            System.out.println("FPS: " + frames);
+            frames = 0;
+        }
+
+
         }
 
     }
