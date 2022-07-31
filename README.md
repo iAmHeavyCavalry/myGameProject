@@ -8,7 +8,7 @@ are to complete this game as a mark down to my real life
 situation and I hope that by completing it I also kind of
 aswel complete my therapy.
 
-## Creat 4 classes added
+## Create 4 classes added
 
 - Main
 - Game
