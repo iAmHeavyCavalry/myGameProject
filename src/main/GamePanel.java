@@ -1,13 +1,18 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.util.Random;
-
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
 
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
+
+import static utilz.Constants.PlayerConstants.*;
+import static utilz.Constants.Directions.*;
 
 //extends is like adding JPanel inputs to GamePanel
 
@@ -16,13 +21,16 @@ public class GamePanel extends JPanel {
     //just like a painting, JFrame is the frame and
     //JPanel is the actual picture of the painting
 
-    private MouseInputs mouseInputs;
+    private final MouseInputs mouseInputs;
     private float xDelta = 100, yDelta = 100;
-    private float xDir = 1F, yDir = 1F;
-    private int frames = 0;
-    private long lastCheck = 0;
-    private Color color = new Color(150, 20, 90);
-    private Random random;
+    private BufferedImage img;
+    //I should practice with 2 dimensional array's on shits [][]
+    private BufferedImage[][] animations;
+    //a stands for animation
+    private int aTick, aIndex, aSpeed = 20;
+    private int playerAction = IDLE;
+    private int playerDir = -1;
+    private boolean moving = false;
 
     //Constructor
     public GamePanel() {
@@ -30,34 +38,114 @@ public class GamePanel extends JPanel {
         //having it on a separate file is much easier
         //to read than having all the KeyEvents here.
         //better structure
-        random = new Random();
-        mouseInputs = new MouseInputs(this);
-        addKeyListener(new KeyboardInputs(this));
 
+        mouseInputs = new MouseInputs(this);
+
+        importImg();
+        loadAnimations();
+
+        setPanelSize();
+        addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
 
     }
 
-    public void changeXDelta(int value) {
-        this.xDelta += value;
+    private void loadAnimations() {
 
-        //The value is moving, but we don't see the rec
-        //moving because there is no loop constantly
-        //repainting the surface.
+        animations = new BufferedImage[17][6];
+
+        for (int j = 0; j < animations.length; j++)
+        //x = vertical || y = horizontal
+        for (int i = 0; i < animations[j].length; i++)
+            animations[j][i] = img.getSubimage(i*68, j*43, 64, 50);
+    }
+
+    //one way of importing images
+    private void importImg() {
+
+    InputStream is = getClass().getResourceAsStream("/Warrior_SheetnoEffect.png");
+
+        // try and catch is like a stronger if statement
+        // normally used to load something. Need to
+        // document a little more about this
+
+        try {
+            img = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                is.close();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //I set this in GamePanel and not Window because
+    //when I set the size in Window we have 400x400
+    //but that's including the border and the top bar
+
+    private void setPanelSize() {
+
+        //1200,800 because I will use images sized 32x32
+        //so this will be a good size to fit those here
+        //so this will even that out with 40 tiles wide
+        //and 25 tiles height, so no tile is outside border
+
+        Dimension size = new Dimension(1200,800);
+        setBackground(Color.pink);
+
+        setPreferredSize(size);
 
 
     }
 
-    public void changeYDelta(int value) {
-        this.yDelta += value;
+    public void setDirection(int direction){
+
+        this.playerDir = direction;
+        moving = true;
+
     }
 
-    //method to say at this position we draw rectangle
-    public void setRectPos(int x, int y) {
-        this.xDelta = x;
-        this.yDelta = y;
+    public void setMoving(boolean moving){
+        this.moving = moving;
     }
+
+    private void updateAnimationTick() {
+
+        aTick++;
+        if(aTick >= aSpeed){
+            aTick = 0;
+
+            aIndex++;
+            if(aIndex >= GetSpriteAmount(playerAction))
+                aIndex = 0;
+        }
+    }
+
+    private void setAnimation() {
+
+        if (moving)
+            playerAction = RUNNING;
+        else
+            playerAction = IDLE;
+    }
+
+    private void updatePos() {
+
+        if (moving){
+            switch (playerDir) {
+                case LEFT -> xDelta -= 5;
+                case UP -> yDelta -= 5;
+                case RIGHT -> xDelta += 5;
+                case DOWN -> yDelta += 5;
+            }
+        }
+    }
+
+
 
     //paintComponent is a method we use to draw, and
     //we need a graphics object as input (Graphics g)
@@ -70,37 +158,10 @@ public class GamePanel extends JPanel {
 
         super.paintComponent(g);
 
-        //we still need to assemble GamePanel inside Window
-        //to be able to see the rectangle.
-
-        updateRectangle();
-        g.setColor(color);
-        g.fillRect((int) xDelta, (int) yDelta, 200, 50);
-
-    }
-
-    private void updateRectangle() {
-
-        xDelta += xDir;
-        if (xDelta > 400 || xDelta < 0) {
-            xDir *= -1;
-            color = getRndColor();
-        }
-        yDelta += yDir;
-        if (yDelta > 400 || yDelta < 0) {
-            yDir *= -1;
-            color = getRndColor();
-        }
-    }
-
-    private Color getRndColor() {
-
-        int r = random.nextInt(255);
-        int g = random.nextInt(255);
-        int b = random.nextInt(255);
-
-        return new Color(r,g,b);
-
+        updateAnimationTick();
+        setAnimation();
+        updatePos();
+        g.drawImage(animations[playerAction][aIndex], (int)xDelta, (int)yDelta, 100 ,100,null); //size of character
     }
 
 }

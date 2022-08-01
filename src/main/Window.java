@@ -1,6 +1,7 @@
 package main;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Window {
 
@@ -14,10 +15,14 @@ public class Window {
 
         frame = new JFrame();
 
-        frame.setSize(400,400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(gamePanel);
         frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.pack();
+
+        //visible recommended to be at last
+
         frame.setVisible(true);
     }
 }
