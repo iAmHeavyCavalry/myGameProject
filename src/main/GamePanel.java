@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
     //I should practice with 2 dimensional array's on shits [][]
     private BufferedImage[][] animations;
     //a stands for animation
-    private int aTick, aIndex, aSpeed = 20;
+    private int aTick, aIndex, aSpeed = 20; //the lower the value the faster the animation
     private int playerAction = IDLE;
     private int playerDir = -1;
     private boolean moving = false;
@@ -53,18 +53,18 @@ public class GamePanel extends JPanel {
 
     private void loadAnimations() {
 
-        animations = new BufferedImage[17][6];
+        animations = new BufferedImage[8][17];
 
         for (int j = 0; j < animations.length; j++)
         //x = vertical || y = horizontal
-        for (int i = 0; i < animations[j].length; i++)
-            animations[j][i] = img.getSubimage(i*68, j*43, 64, 50);
+        for (int i = 0; i < animations[j].length; i++) // i and j are the length of each frame
+            animations[j][i] = img.getSubimage(i * 45, j * 24, 32, 24);
     }
 
     //one way of importing images
     private void importImg() {
 
-    InputStream is = getClass().getResourceAsStream("/Warrior_SheetnoEffect.png");
+    InputStream is = getClass().getResourceAsStream("/hobbit_sprite.png");
 
         // try and catch is like a stronger if statement
         // normally used to load something. Need to
@@ -89,12 +89,12 @@ public class GamePanel extends JPanel {
 
     private void setPanelSize() {
 
-        //1200,800 because I will use images sized 32x32
+        //1280,800 because I will use images sized 32x32
         //so this will be a good size to fit those here
         //so this will even that out with 40 tiles wide
         //and 25 tiles height, so no tile is outside border
 
-        Dimension size = new Dimension(1200,800);
+        Dimension size = new Dimension(1280,800);
         setBackground(Color.pink);
 
         setPreferredSize(size);
@@ -117,7 +117,7 @@ public class GamePanel extends JPanel {
 
         aTick++;
         if(aTick >= aSpeed){
-            aTick = 0;
+            aTick = 0; //resets
 
             aIndex++;
             if(aIndex >= GetSpriteAmount(playerAction))
@@ -161,7 +161,7 @@ public class GamePanel extends JPanel {
         updateAnimationTick();
         setAnimation();
         updatePos();
-        g.drawImage(animations[playerAction][aIndex], (int)xDelta, (int)yDelta, 100 ,100,null); //size of character
+        g.drawImage(animations[playerAction][aIndex], (int)xDelta, (int)yDelta, 128 ,80,null); //size of character
     }
 
 }

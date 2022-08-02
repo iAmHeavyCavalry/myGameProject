@@ -12,8 +12,8 @@ public class Constants {
     public static class PlayerConstants{
 
         public static final int IDLE = 0;
-        public static final int RUNNING = 1;
-        public static final int ATTACK = 2;
+        public static final int ATTACK = 1;
+        public static final int RUNNING = 2;
         public static final int STOP = 3;
         public static final int DEATH = 4;
         public static final int BLOCK = 5;
