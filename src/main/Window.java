@@ -1,28 +1,37 @@
 package main;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+
+import javax.swing.JFrame;
 
 public class Window {
+    private JFrame jframe;
 
-    //here I created a JFrame object as a global variable
-    //it is one way of doing it and the other way is by
-    //using extend.
+    public Window(GamePanel gamePanel) {
 
-    private JFrame frame;
+        jframe = new JFrame();
 
-    public Window (GamePanel gamePanel){
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jframe.add(gamePanel);
+        jframe.setLocationRelativeTo(null);
+        jframe.setResizable(false);
+        jframe.pack();
+        jframe.setVisible(true);
+        jframe.addWindowFocusListener(new WindowFocusListener() {
 
-        frame = new JFrame();
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+                gamePanel.getGame().windowFocusLost();
+            }
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(gamePanel);
-        frame.setLocationRelativeTo(null);
-        frame.setResizable(false);
-        frame.pack();
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
+                // TODO Auto-generated method stub
 
-        //visible recommended to be at last
+            }
+        });
 
-        frame.setVisible(true);
     }
+
 }
