@@ -9,11 +9,11 @@ import javax.swing.JPanel;
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
 
-//extends is like adding JPanel inputs to GamePanel
+//Extends is like adding JPanel inputs to GamePanel
 
 public class GamePanel extends JPanel {
 
-    //just like a painting, JFrame is the frame and
+    //Just like a painting, JFrame is the frame and
     //JPanel is the actual picture of the painting
 
     private final MouseInputs mouseInputs;
@@ -48,7 +48,6 @@ public class GamePanel extends JPanel {
         //and 25 tiles height, so no tile is outside border
 
         Dimension size = new Dimension(1280,800);
-
         setPreferredSize(size);
 
 
@@ -58,15 +57,10 @@ public class GamePanel extends JPanel {
 
     }
 
-
     //paintComponent is a method we use to draw, and
     //we need a graphics object as input (Graphics g)
 
     public void paintComponent(Graphics g) {
-
-        //this line of coding is actually calling
-        //JComponent's paintComponent, JComponent is
-        //the superclass of JPanel
 
         super.paintComponent(g);
 
