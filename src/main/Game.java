@@ -1,6 +1,7 @@
 package main;
 
 import entities.Player;
+import levels.levelManager;
 
 import java.awt.*;
 
@@ -13,8 +14,17 @@ public class Game implements Runnable {
     private Thread gameThread;
     private final int FPS_SET = 120;
     private final int UPS_SET = 200;
+    private levelManager levelM;
 
     private Player player;
+
+    public final static int TILES_DEFAULT_SIZE = 32;
+    public final static float SCALE = 1.5F;
+    public final static int TILES_IN_WIDTH = 26;
+    public final static int TILES_IN_HEIGHT = 14;
+    public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+    public final static int GAME_WIDTH = TILES_SIZE * TILES_IN_WIDTH;
+    public final static int GAME_HEIGHT = TILES_SIZE * TILES_IN_HEIGHT;
 
     //to be able to call any methods in this class,
     //I first need a constructor. A constructor is
@@ -32,14 +42,15 @@ public class Game implements Runnable {
     window = new Window(gamePanel);
 
     //add input focus, needed for keyboard input
+    gamePanel.setFocusable(true);
     gamePanel.requestFocus();
-
     startGameLoop();
-
     }
 
     private void intiClasses() {
-        player = new Player(200,200);
+
+        player = new Player(200,200,(int) (42 * SCALE),(int)(32 * SCALE));
+        levelM = new levelManager(this);
     }
 
     private void startGameLoop(){
@@ -49,10 +60,14 @@ public class Game implements Runnable {
     }
 
     public void update(){
+
         player.update();
+        levelM.update();
     }
 
     public void render(Graphics g){
+
+        levelM.draw(g);
         player.render(g);
     }
 

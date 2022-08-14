@@ -1,10 +1,10 @@
 package entities;
 
-import javax.imageio.ImageIO;
+import utilz.LoadSave;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+
 
 import static utilz.Constants.PlayerConstants.*;
 
@@ -18,8 +18,8 @@ public class Player extends Entity{
     private final float playerSpeed = 2.0F;
 
 
-    public Player(float x, float y) {
-        super(x, y);
+    public Player(float x, float y, int width, int height) {
+        super(x, y, width, height);
         loadAnimations();
     }
     public void update(){
@@ -32,7 +32,7 @@ public class Player extends Entity{
 
     public void render(Graphics g){
 
-        g.drawImage(animations[playerAction][aIndex], (int)x, (int)y, 128 ,80,null);//256, 160
+        g.drawImage(animations[playerAction][aIndex], (int)x, (int)y, width ,height,null);//256, 160
 
     }
 
@@ -92,29 +92,13 @@ public class Player extends Entity{
         }
     }
     private void loadAnimations() {
-        InputStream is = getClass().getResourceAsStream("/hobbit_sprite.png");
 
-        // try and catch is like a stronger if statement
-        // normally used to load something. Need to
-        // document a little more about this
+        BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-        try {
-            BufferedImage img = ImageIO.read(is);
-
-            animations = new BufferedImage[8][17];
-            for (int j = 0; j < animations.length; j++)
-                for (int i = 0; i < animations[j].length; i++) // i and j are the length of each frame
-                    animations[j][i] = img.getSubimage(i * 45, j * 24, 32, 24);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                is.close();
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-        }
+        animations = new BufferedImage[8][17];
+        for (int j = 0; j < animations.length; j++)
+            for (int i = 0; i < animations[j].length; i++) // i and j are the length of each frame
+                animations[j][i] = img.getSubimage(i * 45, j * 24, 32, 24);
     }
 
     public void resetDirBooleans() {

@@ -8,6 +8,10 @@ import javax.swing.JPanel;
 
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
+import jdk.swing.interop.SwingInterOpUtils;
+
+import static main.Game.GAME_HEIGHT;
+import static main.Game.GAME_WIDTH;
 
 //Extends is like adding JPanel inputs to GamePanel
 
@@ -47,8 +51,9 @@ public class GamePanel extends JPanel {
         //so this will even that out with 40 tiles wide
         //and 25 tiles height, so no tile is outside border
 
-        Dimension size = new Dimension(1280,800);
-        setPreferredSize(size);
+        Dimension size = new Dimension(GAME_WIDTH,GAME_HEIGHT);
+        setPreferredSize(size); //Size 1248 : 672
+        //System.out.println("Size " + GAME_WIDTH + " : " + GAME_HEIGHT);
 
 
     }
@@ -75,5 +80,4 @@ public class GamePanel extends JPanel {
     public Game getGame(){
         return game;
     }
-
 }
