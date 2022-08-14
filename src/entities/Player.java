@@ -40,14 +40,15 @@ public class Player extends Entity{
     private void updateAnimationTick() {
 
         aTick++;
-        if(aTick >= aSpeed){
+        if(aTick >= aSpeed) {
             aTick = 0; //resets
 
             aIndex++;
-            if(aIndex >= GetSpriteAmount(playerAction))
+            if (aIndex >= GetSpriteAmount(playerAction)){
                 aIndex = 0;
-                attacking = false;
+            attacking = false;
         }
+      }
     }
 
     private void setAnimation() {

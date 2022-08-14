@@ -1,5 +1,5 @@
 package entities;
-
+//this class can be accessed by player and NPC's
 public abstract class Entity {
 
     protected float x,y;
